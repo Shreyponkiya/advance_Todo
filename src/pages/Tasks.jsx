@@ -68,6 +68,7 @@ const Tasks = () => {
     const fetchTasks = async () => {
       try {
         const res = await axios.get(`${API_BASE_URL}/tasks?date=${selectedDate}`, getAuthConfig());
+        console.log('Fetched tasks:', res.data);
         setTasks(res.data || []);
       } catch (err) {
         toast.error('Failed to load tasks');
