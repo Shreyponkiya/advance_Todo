@@ -5,12 +5,16 @@ import {
   ChevronLeft,
   ChevronRight,
   Zap,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [offset, setOffset] = useState(0);
   const [toggling, setToggling] = useState(null);
   const navigate = useNavigate();
@@ -28,25 +32,28 @@ const Dashboard = () => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          timeout: 10000, // 10s timeout for slow APIs
         }
       : null;
   };
 
-  // ✅ Fetch only routine tasks
+  // ✅ Fetch only routine tasks with Axios
   const fetchTasks = async () => {
     const config = getAuthConfig();
     if (!config) return;
 
     try {
       setLoading(true);
-      const res = await fetch(`${API_BASE_URL}/tasks`, config);
-      const data = await res.json();
+      setError("");
+      const res = await axios.get(`${API_BASE_URL}/tasks`, config);
+      const data = res.data;
       const routine = (Array.isArray(data) ? data : []).filter(
         (t) => t.isRoutine
       );
       setTasks(routine);
     } catch (e) {
       console.error("Error loading tasks:", e);
+      setError("Failed to load tasks. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -82,7 +89,7 @@ const Dashboard = () => {
   const isCompleted = (task, dateStr) =>
     task.completedDates?.some((d) => d.split("T")[0] === dateStr);
 
-  const toggleTask = async () => {
+  const toggleTask = async (taskId, dateStr) => {
     navigate(`/tasks`);
   };
 
@@ -90,20 +97,40 @@ const Dashboard = () => {
   const handleNext = () => setOffset(offset + windowDays);
   const handleToday = () => setOffset(0);
 
+  // ✅ Beautiful Loader
   if (loading)
     return (
-      <div className="flex justify-center items-center h-screen text-gray-600">
-        Loading tasks...
+      <div className="flex flex-col justify-center items-center h-screen text-gray-600 dark:text-gray-300">
+        <Loader2 className="animate-spin w-12 h-12 text-blue-600 mb-4" />
+        <p className="text-lg font-semibold">Loading your tasks...</p>
+        <p className="text-sm text-gray-400 mt-1">
+          Please wait, fetching data from server
+        </p>
+      </div>
+    );
+
+  // ✅ Error State
+  if (error)
+    return (
+      <div className="flex flex-col justify-center items-center h-screen text-red-500">
+        <AlertCircle className="w-10 h-10 mb-3" />
+        <p className="font-semibold text-lg">{error}</p>
+        <button
+          onClick={fetchTasks}
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          Retry
+        </button>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br pt-20 from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-2 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br pt-20 from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-2 sm:p-6 transition-all">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white flex justify-center items-center gap-2">
-            <Zap className="text-blue-600" />
+            <Zap className="text-blue-600 animate-pulse" />
             Daily Routine Tracker
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">
@@ -121,7 +148,7 @@ const Dashboard = () => {
           </button>
           <button
             onClick={handleToday}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
           >
             Today
           </button>
@@ -204,9 +231,7 @@ const Dashboard = () => {
                         onClick={() => toggleTask(task._id, dateStr)}
                         disabled={isDisabled}
                         className={`transition-transform transform hover:scale-110 ${
-                          isDisabled
-                            ? "opacity-50 cursor-not-allowed"
-                            : ""
+                          isDisabled ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                       >
                         {done ? (
