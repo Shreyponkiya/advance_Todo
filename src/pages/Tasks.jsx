@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { Plus, X, Check, Calendar, Clock, ChevronLeft, Edit2, Trash2, PlusCircle, Loader2 } from 'lucide-react';
+import { Plus, X, Check, Calendar, Clock, ChevronLeft, Edit2, Trash2, PlusCircle, Loader2, CheckSquare } from 'lucide-react';
 
 const Tasks = () => {
   const [searchParams] = useSearchParams();
@@ -232,108 +232,185 @@ const Tasks = () => {
   };
 
   return (
-    <div className="pt-20 p-4 sm:p-6 min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
-        <div className="flex items-center space-x-4">
+    <div className="pt-16 sm:pt-20 p-3 sm:p-6 min-h-screen">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
+        <div className="flex items-center space-x-3 sm:space-x-4 w-full sm:w-auto">
           <button 
             onClick={() => navigate('/dashboard')} 
-            className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            className="p-2 sm:p-3 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-xl transition-all flex-shrink-0"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
-            Tasks for {formatDate(selectedDate)}
-          </h1>
+          <div className="flex-1">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Tasks
+            </h1>
+            <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">{formatDate(selectedDate)}</p>
+          </div>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 sm:space-x-3 w-full sm:w-auto">
           <button
             onClick={() => setShowAddCategoryModal(true)}
-            className="flex items-center space-x-1 px-3 py-2 bg-purple-500 text-white text-sm rounded-lg hover:bg-purple-600 transition-colors"
+            className="flex items-center justify-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs sm:text-sm rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg font-semibold flex-1 sm:flex-initial"
           >
-            <PlusCircle className="w-4 h-4" />
-            <span>Add Category</span>
+            <PlusCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden xs:inline">Category</span>
+            <span className="xs:hidden">Cat</span>
           </button>
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center space-x-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            className="flex items-center justify-center space-x-1 sm:space-x-2 px-3 sm:px-5 py-2 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs sm:text-sm rounded-xl hover:from-emerald-700 hover:to-teal-700 transition-all shadow-lg font-semibold flex-1 sm:flex-initial"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
             <span>Add Task</span>
           </button>
         </div>
       </div>
 
-      <div className="overflow-x-auto max-w-2xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {loading ? (
-          <div className="flex flex-col justify-center items-center py-12">
-            <Loader2 className="animate-spin w-10 h-10 text-blue-600 mb-3" />
-            <p className="text-gray-500 dark:text-gray-400">Loading tasks...</p>
+          <div className="flex flex-col justify-center items-center py-12 sm:py-16 bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700">
+            <Loader2 className="animate-spin w-10 h-10 sm:w-12 sm:h-12 text-indigo-600 mb-4" />
+            <p className="text-slate-600 dark:text-slate-300 font-semibold text-sm sm:text-base">Loading tasks...</p>
           </div>
         ) : tasks.length === 0 ? (
-          <p className="text-gray-500 text-center py-8">No tasks for today. Add one to get started!</p>
+          <div className="text-center py-12 sm:py-16 bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700">
+            <CheckSquare className="w-12 h-12 sm:w-16 sm:h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+            <p className="text-slate-500 dark:text-slate-400 text-base sm:text-lg font-semibold">No tasks for today</p>
+            <p className="text-slate-400 dark:text-slate-500 text-xs sm:text-sm mt-2">Add one to get started!</p>
+          </div>
         ) : (
-          <table className="min-w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-            <thead className="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Task</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Category</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Estimated Time</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Routine</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Complete Today</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+          <>
+            {/* Mobile Card View */}
+            <div className="block lg:hidden space-y-3">
               {tasks.map((task) => {
                 const isCompleted = task.completedDates?.some(d => 
                   new Date(d).toISOString().split('T')[0] === selectedDate
                 );
                 return (
-                  <tr key={task._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className={`font-medium ${isCompleted ? 'text-gray-500 line-through' : 'text-gray-900 dark:text-white'}`}>
-                        {task.description}
+                  <div key={task._id} className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-4 hover:shadow-xl transition-all">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <h3 className={`font-bold text-base ${isCompleted ? 'text-slate-400 dark:text-slate-500 line-through' : 'text-slate-800 dark:text-slate-100'}`}>
+                          {task.description}
+                        </h3>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs rounded-full font-medium">
+                            {task.category}
+                          </span>
+                          {task.isRoutine && (
+                            <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs rounded-full font-medium">
+                              Routine
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {task.category}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      {task.estimatedTime || '-'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {task.isRoutine && <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Yes</span>}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
                       <input
                         type="checkbox"
                         checked={isCompleted}
-                        onChange={(e) => handleTickTask(task._id, isCompleted)}
-                        className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                        disabled={isCompleted} // Only tick if not already
+                        onChange={() => handleTickTask(task._id, isCompleted)}
+                        className="h-6 w-6 text-emerald-600 focus:ring-emerald-500 border-slate-300 rounded cursor-pointer flex-shrink-0 ml-3"
+                        disabled={isCompleted}
                       />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                    </div>
+                    {task.estimatedTime && (
+                      <div className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+                        ⏱️ {task.estimatedTime}
+                      </div>
+                    )}
+                    <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-200 dark:border-slate-700">
                       <button
                         onClick={() => openEditTask(task)}
-                        className="text-blue-600 hover:text-blue-900"
-                        title="Edit"
+                        className="flex items-center space-x-1 px-3 py-2 text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-all text-sm font-medium"
                       >
                         <Edit2 className="w-4 h-4" />
+                        <span>Edit</span>
                       </button>
                       <button
                         onClick={() => handleDeleteTask(task._id)}
-                        className="text-red-600 hover:text-red-900"
-                        title="Delete"
+                        className="flex items-center space-x-1 px-3 py-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all text-sm font-medium"
                       >
                         <Trash2 className="w-4 h-4" />
+                        <span>Delete</span>
                       </button>
-                    </td>
-                  </tr>
+                    </div>
+                  </div>
                 );
               })}
-            </tbody>
-          </table>
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden lg:block bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="min-w-full">
+                  <thead className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-slate-700 dark:to-indigo-900/50">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Task</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Category</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Time</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Routine</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Complete</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                    {tasks.map((task, index) => {
+                      const isCompleted = task.completedDates?.some(d => 
+                        new Date(d).toISOString().split('T')[0] === selectedDate
+                      );
+                      return (
+                        <tr key={task._id} className={`hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-all ${
+                          index % 2 === 0 ? 'bg-white/50 dark:bg-slate-800/50' : 'bg-slate-50/50 dark:bg-slate-800/30'
+                        }`}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className={`font-semibold ${isCompleted ? 'text-slate-400 dark:text-slate-500 line-through' : 'text-slate-800 dark:text-slate-100'}`}>
+                              {task.description}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-xs rounded-full font-medium">
+                              {task.category}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+                            {task.estimatedTime || '—'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {task.isRoutine && <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs rounded-full font-medium">Routine</span>}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <input
+                              type="checkbox"
+                              checked={isCompleted}
+                              onChange={() => handleTickTask(task._id, isCompleted)}
+                              className="h-5 w-5 text-emerald-600 focus:ring-emerald-500 border-slate-300 rounded cursor-pointer"
+                              disabled={isCompleted}
+                            />
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
+                            <button
+                              onClick={() => openEditTask(task)}
+                              className="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors"
+                              title="Edit"
+                            >
+                              <Edit2 className="w-5 h-5" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteTask(task._id)}
+                              className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+                              title="Delete"
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
         )}
       </div>
 
@@ -535,26 +612,26 @@ const Tasks = () => {
       )}
 
       {/* Category List */}
-      <div className="mt-8 max-w-2xl mx-auto">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Manage Categories</h2>
-        <div className="space-y-2">
+      <div className="mt-8 sm:mt-12 max-w-6xl mx-auto">
+        <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4 sm:mb-6">Manage Categories</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {categories.length === 0 ? (
-            <p className="text-gray-500">No categories yet. Add one above!</p>
+            <p className="text-slate-500 dark:text-slate-400 col-span-full text-center py-6 sm:py-8 text-sm sm:text-base">No categories yet. Add one above!</p>
           ) : (
             categories.map((cat) => (
-              <div key={cat._id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <span className="text-sm font-medium text-gray-900 dark:text-white">{cat.name}</span>
-                <div className="flex items-center space-x-2">
+              <div key={cat._id} className="flex items-center justify-between p-3 sm:p-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-all">
+                <span className="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate flex-1 mr-2">{cat.name}</span>
+                <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
                   <button
                     onClick={() => openEditCategory(cat)}
-                    className="p-1 text-blue-600 hover:text-blue-800"
+                    className="p-2 text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-all"
                     title="Edit Category"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDeleteCategory(cat._id)}
-                    className="p-1 text-red-600 hover:text-red-800"
+                    className="p-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-all"
                     title="Delete Category"
                   >
                     <Trash2 className="w-4 h-4" />

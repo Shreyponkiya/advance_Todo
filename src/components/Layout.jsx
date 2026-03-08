@@ -9,13 +9,13 @@ const Layout = () => {
   const toggleSidebar = () => setSidebarOpen(prev => !prev);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-950">
       {/* Mobile Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className="fixed top-4 left-4 z-50 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-md lg:hidden"
+        className="fixed top-4 left-4 z-50 p-2.5 sm:p-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-lg lg:hidden hover:from-indigo-700 hover:to-purple-700 transition-all"
       >
-        <Menu className="w-6 h-6" />
+        <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
       </button>
 
       {/* Sidebar */}
@@ -23,7 +23,7 @@ const Layout = () => {
 
       {/* Main Content – responsive margin */}
       <main className="transition-all duration-300 lg:ml-64">
-        <div className="sm:p-6 lg:p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
           <Outlet />
         </div>
       </main>

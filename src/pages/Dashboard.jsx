@@ -101,20 +101,20 @@ const Dashboard = () => {
 
   if (loading)
     return (
-      <div className="flex flex-col justify-center items-center h-screen text-gray-600 dark:text-gray-300">
-        <Loader2 className="animate-spin w-12 h-12 text-blue-600 mb-4" />
-        <p className="text-lg font-semibold">Loading your tasks...</p>
+      <div className="flex flex-col justify-center items-center h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-950">
+        <Loader2 className="animate-spin w-16 h-16 text-indigo-600 mb-4" />
+        <p className="text-xl font-bold text-slate-700 dark:text-slate-300">Loading your tasks...</p>
       </div>
     );
 
   if (error)
     return (
-      <div className="flex flex-col justify-center items-center h-screen text-red-500">
-        <AlertCircle className="w-10 h-10 mb-3" />
-        <p className="font-semibold text-lg">{error}</p>
+      <div className="flex flex-col justify-center items-center h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-950">
+        <AlertCircle className="w-14 h-14 mb-4 text-red-500" />
+        <p className="font-bold text-xl text-slate-800 dark:text-slate-200 mb-2">{error}</p>
         <button
           onClick={fetchTasks}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="mt-4 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg font-semibold"
         >
           Retry
         </button>
@@ -122,47 +122,47 @@ const Dashboard = () => {
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br pt-20 from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-2 sm:p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br pt-20 from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-950 p-2 sm:p-6">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white flex justify-center items-center gap-2">
-            <Zap className="text-blue-600 animate-pulse" />
+        <div className="text-center mb-8">
+          <h1 className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent flex justify-center items-center gap-3">
+            <Zap className="text-indigo-600 animate-pulse w-10 h-10" />
             Daily Routine Tracker
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm sm:text-base">
-            Stay consistent — one tick at a time
+          <p className="text-slate-600 dark:text-slate-400 mt-3 text-base sm:text-lg font-medium">
+            Build consistency, one day at a time ✨
           </p>
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center bg-white dark:bg-gray-800 rounded-xl shadow p-2 sm:p-3 mb-3 sm:mb-4">
+        <div className="flex justify-between items-center bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-3 sm:p-4 mb-6">
           <button
             onClick={handlePrev}
-            className="p-1 sm:p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+            className="p-2 sm:p-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400"
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={22} />
           </button>
           <button
             onClick={handleToday}
-            className="px-3 sm:px-4 py-1 sm:py-2 bg-blue-600 text-white text-sm sm:text-base rounded-lg font-semibold hover:bg-blue-700 transition"
+            className="px-5 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm sm:text-base rounded-xl font-bold hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
             Today
           </button>
           <button
             onClick={handleNext}
-            className="p-1 sm:p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+            className="p-2 sm:p-3 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400"
           >
-            <ChevronRight size={18} />
+            <ChevronRight size={22} />
           </button>
         </div>
 
         {/* Scrollable Grid */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-x-auto">
+        <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-lg rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
           <div className="min-w-[700px] sm:min-w-full">
             {/* Dates Header */}
-            <div className="grid grid-cols-8 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-xs sm:text-sm">
-              <div className="p-2 sm:p-3 font-semibold text-gray-700 dark:text-gray-300">
+            <div className="grid grid-cols-8 border-b-2 border-indigo-200 dark:border-indigo-900 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-slate-700 dark:to-indigo-900/50 text-xs sm:text-sm">
+              <div className="p-3 sm:p-4 font-bold text-slate-800 dark:text-slate-200">
                 Task
               </div>
               {dateRange.map((dateStr) => {
@@ -173,20 +173,22 @@ const Dashboard = () => {
                 return (
                   <div
                     key={dateStr}
-                    className={`p-2 sm:p-3 text-center ${
-                      isToday ? "bg-blue-100 dark:bg-blue-900/40 font-semibold" : ""
+                    className={`p-3 sm:p-4 text-center transition-all ${
+                      isToday 
+                        ? "bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold shadow-lg" 
+                        : "hover:bg-indigo-50 dark:hover:bg-indigo-900/30"
                     }`}
                   >
                     <div
-                      className={`text-[10px] sm:text-xs ${
-                        isToday ? "text-black font-bold" : "text-gray-500"
+                      className={`text-[10px] sm:text-xs uppercase tracking-wider ${
+                        isToday ? "text-indigo-100" : "text-slate-500 dark:text-slate-400"
                       }`}
                     >
                       {week}
                     </div>
                     <div
-                      className={`text-sm sm:text-lg ${
-                        isToday ? "text-black font-bold" : "text-gray-800 dark:text-gray-100"
+                      className={`text-base sm:text-xl font-bold mt-1 ${
+                        isToday ? "text-white" : "text-slate-800 dark:text-slate-100"
                       }`}
                     >
                       {day}
@@ -198,18 +200,21 @@ const Dashboard = () => {
 
             {/* Tasks */}
             {tasks.length === 0 ? (
-              <div className="p-8 text-center text-gray-500 dark:text-gray-400 text-sm">
-                No routine tasks found.
+              <div className="p-12 text-center">
+                <div className="text-slate-400 dark:text-slate-500 text-lg mb-2">No routine tasks yet</div>
+                <p className="text-slate-500 dark:text-slate-400 text-sm">Create your first task to get started!</p>
               </div>
             ) : (
-              tasks.map((task) => (
+              tasks.map((task, index) => (
                 <div
                   key={task._id}
-                  className="grid grid-cols-8 border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/40 transition text-xs sm:text-sm"
+                  className={`grid grid-cols-8 border-t border-slate-200 dark:border-slate-700 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-all duration-200 text-xs sm:text-sm ${
+                    index % 2 === 0 ? 'bg-white/50 dark:bg-slate-800/50' : 'bg-slate-50/50 dark:bg-slate-800/30'
+                  }`}
                 >
                   <div
                     onClick={() => navigate(`/task/${task._id}`)}
-                    className="p-2 sm:p-3 flex items-center font-medium text-gray-900 dark:text-white cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
+                    className="p-3 sm:p-4 flex items-center font-semibold text-slate-800 dark:text-slate-100 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                   >
                     {task.description}
                   </div>
@@ -217,18 +222,18 @@ const Dashboard = () => {
                     const done = isCompleted(task, dateStr);
                     const isDisabled = toggling === `${task._id}-${dateStr}`;
                     return (
-                      <div key={dateStr} className="p-2 sm:p-3 flex justify-center items-center">
+                      <div key={dateStr} className="p-3 sm:p-4 flex justify-center items-center">
                         <button
                           onClick={() => toggleTask(task._id, dateStr)}
                           disabled={isDisabled}
-                          className={`transition-transform hover:scale-105 ${
+                          className={`transition-all duration-200 hover:scale-110 ${
                             isDisabled ? "opacity-50 cursor-not-allowed" : ""
                           }`}
                         >
                           {done ? (
-                            <CheckCircle className="text-green-600 w-4 h-4 sm:w-6 sm:h-6" />
+                            <CheckCircle className="text-emerald-500 w-5 h-5 sm:w-7 sm:h-7 drop-shadow-lg" />
                           ) : (
-                            <Circle className="text-gray-300 dark:text-gray-600 w-4 h-4 sm:w-6 sm:h-6" />
+                            <Circle className="text-slate-300 dark:text-slate-600 w-5 h-5 sm:w-7 sm:h-7 hover:text-indigo-400 dark:hover:text-indigo-500" />
                           )}
                         </button>
                       </div>
