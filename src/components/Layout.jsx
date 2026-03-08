@@ -22,12 +22,7 @@ const Layout = () => {
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* Main Content – responsive margin */}
-      <main
-        className={`
-          transition-all duration-300
-          ${sidebarOpen ? 'ml-0' : 'lg:ml-20 xl:ml-64'}
-        `}
-      >
+      <main className="transition-all duration-300 lg:ml-64">
         <div className="sm:p-6 lg:p-8">
           <Outlet />
         </div>

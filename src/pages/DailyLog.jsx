@@ -4,7 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import ConfirmationModal from "../components/ConfirmationModal";
 import ViewModal from "../components/ViewModal";
-import { Edit, Trash2, Eye } from "lucide-react";
+import { Edit, Trash2, Eye, Loader2 } from "lucide-react";
 
 // ✅ Reusable Add/Edit Modal Component
 const AddEditModal = ({
@@ -107,9 +107,16 @@ const AddEditModal = ({
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-green-600 text-white px-4 py-2.5 rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors duration-200 font-medium"
+              className="flex-1 bg-green-600 text-white px-4 py-2.5 rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors duration-200 font-medium flex items-center justify-center"
             >
-              {loading ? "Saving..." : "Save"}
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <span>Save</span>
+              )}
             </button>
             <button
               type="button"
@@ -346,9 +353,10 @@ const DailyLog = () => {
 
       {/* ✅ Table */}
       {loading ? (
-        <p className="text-center text-gray-500 dark:text-gray-400 animate-pulse">
-          Loading logs...
-        </p>
+        <div className="flex flex-col justify-center items-center py-12">
+          <Loader2 className="animate-spin w-10 h-10 text-blue-600 mb-3" />
+          <p className="text-gray-500 dark:text-gray-400">Loading logs...</p>
+        </div>
       ) : logs.length === 0 ? (
         <p className="text-center text-gray-500 dark:text-gray-400">
           No logs found for this date.

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { Plus, X, Check, Calendar, Clock, ChevronLeft, Edit2, Trash2, PlusCircle } from 'lucide-react';
+import { Plus, X, Check, Calendar, Clock, ChevronLeft, Edit2, Trash2, PlusCircle, Loader2 } from 'lucide-react';
 
 const Tasks = () => {
   const [searchParams] = useSearchParams();
@@ -66,6 +66,7 @@ const Tasks = () => {
   // Fetch tasks for selected date
   useEffect(() => {
     const fetchTasks = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(`${API_BASE_URL}/tasks?date=${selectedDate}`, getAuthConfig());
         console.log('Fetched tasks:', res.data);
@@ -74,6 +75,8 @@ const Tasks = () => {
         toast.error('Failed to load tasks');
         setTasks([]);
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchTasks();
@@ -261,7 +264,12 @@ const Tasks = () => {
       </div>
 
       <div className="overflow-x-auto max-w-2xl mx-auto">
-        {tasks.length === 0 ? (
+        {loading ? (
+          <div className="flex flex-col justify-center items-center py-12">
+            <Loader2 className="animate-spin w-10 h-10 text-blue-600 mb-3" />
+            <p className="text-gray-500 dark:text-gray-400">Loading tasks...</p>
+          </div>
+        ) : tasks.length === 0 ? (
           <p className="text-gray-500 text-center py-8">No tasks for today. Add one to get started!</p>
         ) : (
           <table className="min-w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
@@ -444,8 +452,17 @@ const Tasks = () => {
                   disabled={loading}
                   className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 transition-colors flex items-center justify-center space-x-2"
                 >
-                  <Plus className="w-4 h-4" />
-                  <span>{loading ? 'Saving...' : (editingTask ? 'Update Task' : 'Add Task')}</span>
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Saving...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="w-4 h-4" />
+                      <span>{editingTask ? 'Update Task' : 'Add Task'}</span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>
@@ -500,9 +517,16 @@ const Tasks = () => {
                 <button
                   type="submit"
                   disabled={categoryLoading}
-                  className="flex-1 px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 disabled:opacity-50 transition-colors"
+                  className="flex-1 px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 disabled:opacity-50 transition-colors flex items-center justify-center"
                 >
-                  <span>{categoryLoading ? 'Saving...' : (editingCategory ? 'Update' : 'Add')}</span>
+                  {categoryLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      <span>Saving...</span>
+                    </>
+                  ) : (
+                    <span>{editingCategory ? 'Update' : 'Add'}</span>
+                  )}
                 </button>
               </div>
             </form>
