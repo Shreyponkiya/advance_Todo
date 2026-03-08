@@ -31,8 +31,7 @@ const Dashboard = () => {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-          },
-          timeout: 10000,
+          }          
         }
       : null;
   };
@@ -63,15 +62,16 @@ const Dashboard = () => {
   }, []);
 
   // ✅ Local date-safe logic
+    // ✅ Local time-safe date calculation
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const todayStr = today.toLocaleDateString("en-CA");
+  const localToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const todayStr = localToday.toLocaleDateString("en-CA");
 
   const windowDays = 7;
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() + offset - 3);
-  const endDate = new Date(today);
-  endDate.setDate(today.getDate() + offset + 3);
+  const startDate = new Date(localToday);
+  startDate.setDate(localToday.getDate() + offset - 3);
+  const endDate = new Date(localToday);
+  endDate.setDate(localToday.getDate() + offset + 3);
 
   const getDateRange = (start, end) => {
     const list = [];
@@ -84,6 +84,7 @@ const Dashboard = () => {
   };
 
   const dateRange = getDateRange(startDate, endDate);
+
 
   const isCompleted = (task, dateStr) =>
     task.completedDates?.some(

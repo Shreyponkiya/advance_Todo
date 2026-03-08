@@ -12,6 +12,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route element={<Layout />}>
+          <Route path="/" element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/daily-log" element={<DailyLog />} />
           <Route path="/growth" element={<Growth />} />
